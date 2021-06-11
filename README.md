@@ -23,6 +23,33 @@ provide these important devices affordably and efficiently to the benefit of peo
 
 <i>Follow the instructions listed below to get started with the setup of this project on your local system.</i>
 
+### Project Structure
+
+```markdown
+.
+├── data
+│   ├── metadata.csv
+│   ├── SampleSubmission.csv
+│   ├── Test.csv
+│   ├── Train.csv
+│   └── VariablesDefinition.txt
+├── models
+├── notebooks
+│   ├── exploratory_data_analysis
+│   │   └── eda.ipynb
+│   └── StarterNotebook.ipynb
+├── Pipfile
+├── Pipfile.lock
+├── README.md
+├── requirements.txt
+└── src
+    ├── data
+    │   └── __init__.py
+    ├── features
+    └── model
+        └── __init__.py
+```
+
 ### Requirements
 
 You need `Python 3.9` to run the project to avoid any package resolution issues.  
@@ -83,30 +110,3 @@ website. For CentOS, you can visit [this](https://computingforgeeks.com/install-
   ```bash
   pipenv install <package_name> --dev
   ```
-
-### Project Structure
-
-```markdown
-.
-├── data
-│   ├── metadata.csv
-│   ├── SampleSubmission.csv
-│   ├── Test.csv
-│   ├── Train.csv
-│   └── VariablesDefinition.txt
-├── models
-├── notebooks
-│   ├── exploratory_data_analysis
-│   │   └── eda.ipynb
-│   └── StarterNotebook.ipynb
-├── Pipfile
-├── Pipfile.lock
-├── README.md
-├── requirements.txt
-└── src
-    ├── data
-    │   └── __init__.py
-    ├── features
-    └── model
-        └── __init__.py
-```
