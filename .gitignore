@@ -1,0 +1,8 @@
+__pycache__/
+venv/
+.idea/
+.vscode/
+.ipynb_checkpoints
+/.ipynb_checkpoints/
+*/StarterNotebook.ipynb
+/notebooks/.ipynb_checkpoints/StarterNotebook-checkpoint.ipynb
