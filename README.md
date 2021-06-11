@@ -1,4 +1,4 @@
-# Outlier Detection in Power consumption
+# SFC PAYGo Solar Credit Repayment
 [![Python 3.6](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-390/)
 
 The objective of this competition was to provide methods for automatically detecting abnormal energy consumption in buildings.
