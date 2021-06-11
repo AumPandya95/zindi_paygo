@@ -84,3 +84,29 @@ website. For CentOS, you can visit [this](https://computingforgeeks.com/install-
   pipenv install <package_name> --dev
   ```
 
+### Project Structure
+
+```markdown
+.
+├── data
+│   ├── metadata.csv
+│   ├── SampleSubmission.csv
+│   ├── Test.csv
+│   ├── Train.csv
+│   └── VariablesDefinition.txt
+├── models
+├── notebooks
+│   ├── exploratory_data_analysis
+│   │   └── eda.ipynb
+│   └── StarterNotebook.ipynb
+├── Pipfile
+├── Pipfile.lock
+├── README.md
+├── requirements.txt
+└── src
+    ├── data
+    │   └── __init__.py
+    ├── features
+    └── model
+        └── __init__.py
+```
