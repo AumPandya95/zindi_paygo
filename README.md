@@ -38,34 +38,49 @@ website. For CentOS, you can visit [this](https://computingforgeeks.com/install-
 
 ### Installation
 
-* Create a virtual environment and activate the same
+* This project requires `pipenv` to install dependencies
+  * Install `pipenv` using the following command for `Ubuntu`:
     ```bash
-    virtualenv -p python3.9 venv
-    source venv/bin/activate
+    sudo pip install pipenv
     ```
-* Specify the python location in place of `python3.9`.
+    
+  * Install `pipenv` using the following command for `Windows`:
+    ```bash
+    pip install --user pipenv
+    
+    # Set Path | Replace "$user_name" with your user name
+    set PATH=%PATH%;set PATH=%PATH%;'c:\users\$user_name\appdata\local\programs\python\python39-32\Scripts'
+    ```
+  
+* In the sources root of the directory, run the following command to install dependencies from the `Pipfile.lock` file
+  ```bash
+  pipenv install --ignore-pipfile
+  ```
 * You can find the location of your specific python version by using this command (shown for python3.9)
     ```bash
     which python3.9
     ```
 
-### Setup
+### Additional
 
-* After activating the environment, update setuptools and install the requirements for the project,
+* After activating the environment, if you want to locate the project,
     ```bash
-    pip install -U setuptools
-    pip install -r requirements.txt
+    pipenv--where
     ```
-* Run the following command to make shell scripts executable,
+* Locate the virtualenv,
     ```bash
-    chmod -x process_data.sh
+    pipenv --venv
     ```
+* Locate the Python interpreter,
+  ```bash
+  pipenv --py
+   ```
+* To activate this project's virtualenv, run the following,
+  ```bash
+  pipenv shell
+  ```
+* Install a dev dependency,
+  ```bash
+  pipenv install <package_name> --dev
+  ```
 
-### Data Setup
-
-* Next up, we need to extract data files and save the processed files to the `./data/processed/` directory. For that run
-  the following command in the terminal,
-    * Instructions/ information will be given once you run the following script
-    ```bash
-    ./process_data.sh
-    ```
