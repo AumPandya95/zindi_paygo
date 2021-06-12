@@ -92,7 +92,7 @@ website. For CentOS, you can visit [this](https://computingforgeeks.com/install-
 
 * After activating the environment, if you want to locate the project,
     ```bash
-    pipenv--where
+    pipenv --where
     ```
 * Locate the virtualenv,
     ```bash
