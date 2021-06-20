@@ -87,6 +87,10 @@ website. For CentOS, you can visit [this](https://computingforgeeks.com/install-
     ```bash
     which python3.9
     ```
+* Add the ipython kernel for your jupyter notebook
+  ```bash
+  ipython kernel install --name "zindi_payg" --user
+  ```
 
 ### Additional
 
