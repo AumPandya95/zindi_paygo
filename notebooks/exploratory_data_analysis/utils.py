@@ -100,3 +100,16 @@ def std_dev_calc(input_val):
         raise Exception("Undetected Input")
 
     return result
+
+def back_feature(input_val, n=1):
+	if input_val in (None, np.nan):
+		result = 0
+	elif isinstance(input_val, list):
+		if len(input_val) >= n:
+			result = round(float(input_val[-1*n]), 2)
+		else:
+			result = 0
+	else:
+		raise Exception("Undetected Input")
+
+	return result
