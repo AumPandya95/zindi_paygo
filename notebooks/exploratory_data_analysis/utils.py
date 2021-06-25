@@ -1,6 +1,7 @@
-import numpy as np
 import statistics
-from datetime import datetime
+
+import numpy as np
+
 
 def split(ip_string):
     if isinstance(ip_string, str):
@@ -87,12 +88,6 @@ def min_calc(input_val):
         raise Exception("Undetected Input")
 
     return result
-
-
-def convert(ip_str):
-    ip_str = ip_str.replace("'", "").strip()
-    ip_str = str(datetime.strptime(ip_str, "%m-%Y").strftime("%Y-%m"))
-    return ip_str
 
 
 def std_dev_calc(input_val):
