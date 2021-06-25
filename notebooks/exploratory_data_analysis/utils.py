@@ -1,6 +1,6 @@
 import numpy as np
 import statistics
-
+from datetime import datetime
 
 def split(ip_string):
     if isinstance(ip_string, str):
@@ -11,105 +11,111 @@ def split(ip_string):
         raise Exception("Undetected Input")
 
     return result
-    
+
 
 def length_calc(input_val):
-	if input_val in (None, np.nan):
-		result = 0
-	elif isinstance(input_val, list):
-		result = len(input_val)
-	else:
-		raise Exception("Undetected Input")
+    if input_val in (None, np.nan):
+        result = 0
+    elif isinstance(input_val, list):
+        result = len(input_val)
+    else:
+        raise Exception("Undetected Input")
 
-	return result
+    return result
 
 
 def sum_calc(input_val):
-	if input_val in (None, np.nan):
-		result = 0
-		
-	elif isinstance(input_val, list):
-		result = 0
-		for ele in input_val:
-			result += float(ele)
-			result = round(result, 2)
-	else:
-		raise Exception("Undetected Input")
+    if input_val in (None, np.nan):
+        result = 0
 
-	return result
+    elif isinstance(input_val, list):
+        result = 0
+        for ele in input_val:
+            result += float(ele)
+            result = round(result, 2)
+    else:
+        raise Exception("Undetected Input")
+
+    return result
 
 
 def mean_calc(input_val):
-	if input_val in (None, np.nan):
-		result = 0
-		
-	elif isinstance(input_val, list):
-		result = 0
-		for ele in input_val:
-			result += float(ele)
-		result = result / len(input_val)
-		result = round(result, 2)
-	else:
-		raise Exception("Undetected Input")
+    if input_val in (None, np.nan):
+        result = 0
 
-	return result
-		
-		
+    elif isinstance(input_val, list):
+        result = 0
+        for ele in input_val:
+            result += float(ele)
+        result = result / len(input_val)
+        result = round(result, 2)
+    else:
+        raise Exception("Undetected Input")
+
+    return result
+
+
 def median_calc(input_val):
-	if input_val in (None, np.nan):
-		result = 0
-	elif isinstance(input_val, list):
-		result = statistics.median(map(float, input_val))
-		result = round(result, 2)
-	else:
-		raise Exception("Undetected Input")
+    if input_val in (None, np.nan):
+        result = 0
+    elif isinstance(input_val, list):
+        result = statistics.median(map(float, input_val))
+        result = round(result, 2)
+    else:
+        raise Exception("Undetected Input")
 
-	return result
-	
+    return result
+
 
 def max_calc(input_val):
-	if input_val in (None, np.nan):
-		result = 0
-	elif isinstance(input_val, list):
-		result = max(map(float, input_val))
-	else:
-		raise Exception("Undetected Input")
+    if input_val in (None, np.nan):
+        result = 0
+    elif isinstance(input_val, list):
+        result = max(map(float, input_val))
+    else:
+        raise Exception("Undetected Input")
 
-	return result
-	
+    return result
+
 
 def min_calc(input_val):
-	if input_val in (None, np.nan):
-		result = 0
-	elif isinstance(input_val, list):
-		result = min(map(float, input_val))
-	else:
-		raise Exception("Undetected Input")
+    if input_val in (None, np.nan):
+        result = 0
+    elif isinstance(input_val, list):
+        result = min(map(float, input_val))
+    else:
+        raise Exception("Undetected Input")
 
-	return result
+    return result
+
+
+def convert(ip_str):
+    ip_str = ip_str.replace("'", "").strip()
+    ip_str = str(datetime.strptime(ip_str, "%m-%Y").strftime("%Y-%m"))
+    return ip_str
 
 
 def std_dev_calc(input_val):
-	if input_val in (None, np.nan):
-		result = 0
-	elif isinstance(input_val, list):
-		result = statistics.stdev(map(float, input_val))
-		result = round(result, 2)
-	else:
-		raise Exception("Undetected Input")
+    if input_val in (None, np.nan):
+        result = 0
+    elif isinstance(input_val, list):
+        result = statistics.stdev(map(float, input_val))
+        result = round(result, 2)
+    else:
+        raise Exception("Undetected Input")
 
-	return result
-	
+    return result
+
 
 def back_feature(input_val, n=1):
-	if input_val in (None, np.nan):
-		result = 0
-	elif isinstance(input_val, list):
-		if len(input_val) >= n:
-			result = round(float(input_val[-1*n]), 2)
-		else:
-			result = 0		
-	else:
-		raise Exception("Undetected Input")
+    if input_val in (None, np.nan):
+        result = 0
+    elif isinstance(input_val, list):
+        if len(input_val) >= n:
+            result = round(float(input_val[-1 * n]), 2)
+        else:
+            result = 0
+    else:
+        raise Exception("Undetected Input")
 
-	return result
+    return result
