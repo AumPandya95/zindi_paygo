@@ -36,16 +36,26 @@ def one_hot_encoding(
         encoder = OneHotEncoder()
         encoder.fit(categorical_frame)
 
-        final_array = encoder.transform(categorical_frame)
+        final_array = encoder.transform(categorical_frame).toarray()
 
         return final_array, encoder
     else:
         if fitted_encoder:
-            final_array = fitted_encoder.transform(categorical_frame)
+            final_array = fitted_encoder.transform(categorical_frame).toarray()
 
-            return final_array
+            return final_array, None
         else:
             raise Exception(
                 "No fitted encoder object provided to transform the test/ validation data set."
             )
 
+
+if __name__ == "__main__":
+    # frame = pd.DataFrame([[1, 2, 3, 4], [5, 2, 10, 14]], columns=['a', 'b', 'c', 'd'])
+    frame = np.array([[1, 2, 3, 4], [5, 2, 10, 14]])
+    fin, enc = one_hot_encoding(categorical_frame=frame, conv=True)
+    print(list(fin.columns))
+    # 1 5 2 3 10 4 14
+
+    fin, enc = one_hot_encoding(categorical_frame=frame, conv=False)
+    print(fin)
