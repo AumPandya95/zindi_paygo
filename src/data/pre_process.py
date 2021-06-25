@@ -32,7 +32,6 @@ def one_hot_encoding(
     -------
     encoded_features: np.array
     """
-    encoder = None
     if type_of_data == "train":
         encoder = OneHotEncoder()
         encoder.fit(categorical_frame)
