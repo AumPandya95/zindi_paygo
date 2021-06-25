@@ -33,7 +33,7 @@ def one_hot_encoding(
     encoded_features: np.array
     """
     if type_of_data == "train":
-        encoder = OneHotEncoder()
+        encoder = OneHotEncoder(handle_unknown="ignore")
         encoder.fit(categorical_frame)
 
         final_array = encoder.transform(categorical_frame).toarray()
@@ -43,7 +43,7 @@ def one_hot_encoding(
         if fitted_encoder:
             final_array = fitted_encoder.transform(categorical_frame).toarray()
 
-            return final_array, None
+            return final_array, fitted_encoder
         else:
             raise Exception(
                 "No fitted encoder object provided to transform the test/ validation data set."
@@ -59,3 +59,10 @@ if __name__ == "__main__":
 
     fin, enc = one_hot_encoding(categorical_frame=frame, conv=False)
     print(fin)
+
+    fr, en = one_hot_encoding(categorical_frame=np.array([[6, 2, 10, 14],
+                                                          [1, 2, 3, 14]]),
+                              type_of_data='test',
+                              fitted_encoder=enc,
+                              conv=True)
+    print(fr)
