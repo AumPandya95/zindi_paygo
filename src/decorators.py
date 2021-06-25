@@ -21,7 +21,7 @@ def conv_to_df(func):
             encoded_arr = pd.DataFrame(encoded_arr, columns=enc_columns)
         else:  # if isinstance(frame, np.ndarray)
             if kwargs.get("conv"):
-                if kwargs.get("type_of_data") == "train":
+                if kwargs.get("type_of_data", False) == "train":
                     enc_columns = []
                     for column_idx in range(frame.shape[1]):
                         enc_columns.extend(sorted(np.unique(frame[:, column_idx], axis=0)))
