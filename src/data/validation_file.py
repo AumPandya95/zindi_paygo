@@ -34,8 +34,18 @@ class SubmissionFile:
     def transform_prediction(self):
         """Transform prediction cols into the submission format."""
         transformed_frame = self.validation_data.melt(
-            id_vars=["ID"], value_vars=["m1", "m2", "m3", "m4", "m5", "m6"], var_name="temp", value_name="Target"
+            id_vars=["ID"], value_vars=["m1_pred", "m2_pred", "m3_pred", "m4_pred", "m5_pred", "m6_pred"],
+            var_name="temp", value_name="Target"
         )
+        transformed_frame["temp"].replace(
+            {
+                "m1_pred": "m1",
+                "m2_pred": "m2",
+                "m3_pred": "m3",
+                "m4_pred": "m4",
+                "m5_pred": "m5",
+                "m6_pred": "m6"
+            }, inplace=True)
         transformed_frame["ID"] = transformed_frame[["ID", "temp"]].agg(" x ".join, axis=1)
         transformed_frame.drop(columns=["temp"], inplace=True)
         transformed_frame.sort_values(by=["ID"], ascending=True, inplace=True)
