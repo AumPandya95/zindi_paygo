@@ -11,16 +11,22 @@ def conv_to_df(func):
         encoded_arr, encoder = func(*args, **kwargs)
         # two pipelines for pd.DataFrame and np.ndarray
         if isinstance(frame, pd.DataFrame):
-            enc_columns = []
-            for column in frame.columns:
-                # Each column's categories need to be sorted as this is how OHE is implemented
-                enc_columns.extend(sorted(frame[column].unique()))
+            if kwargs.get("type_of_data", False) == "train":
+                enc_columns = []
+                for column in frame.columns:
+                    # Each column's categories need to be sorted as this is how OHE is implemented
+                    enc_columns.extend(sorted(frame[column].unique()))
+            else:
+                enc_columns = [categories for cat_arr in encoder.categories_ for categories in cat_arr]
             encoded_arr = pd.DataFrame(encoded_arr, columns=enc_columns)
         else:  # if isinstance(frame, np.ndarray)
             if kwargs.get("conv"):
-                enc_columns = []
-                for column_idx in range(frame.shape[1]):
-                    enc_columns.extend(sorted(np.unique(frame[:, column_idx], axis=0)))
+                if kwargs.get("type_of_data") == "train":
+                    enc_columns = []
+                    for column_idx in range(frame.shape[1]):
+                        enc_columns.extend(sorted(np.unique(frame[:, column_idx], axis=0)))
+                else:
+                    enc_columns = [categories for cat_arr in encoder.categories_ for categories in cat_arr]
                 encoded_arr = pd.DataFrame(encoded_arr, columns=enc_columns)
 
         return encoded_arr, encoder
