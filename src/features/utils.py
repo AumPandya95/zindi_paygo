@@ -117,3 +117,17 @@ def back_feature(input_val, n=1):
         raise Exception("Undetected Input")
 
     return result
+
+
+def add_predicted_payment(original_struct, value_to_add):
+    print(original_struct)
+    if isinstance(original_struct, str):
+        result = split(original_struct)
+        result.append(value_to_add)
+    elif isinstance(original_struct, list):
+        result = original_struct
+        result.append(value_to_add)
+    else:
+        raise Exception("Invalid Input")
+
+    return result
