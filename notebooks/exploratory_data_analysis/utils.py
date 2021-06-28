@@ -5,7 +5,7 @@ import numpy as np
 
 def split(ip_string):
     if isinstance(ip_string, str):
-        result = ip_string.strip("][").split(",")
+        result = [float(num) for num in ip_string.strip("][").split(",")]
     elif ip_string in (None, np.nan):
         result = np.nan
     else:
