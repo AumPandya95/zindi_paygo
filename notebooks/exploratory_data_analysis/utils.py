@@ -3,12 +3,12 @@ import statistics
 import numpy as np
 
 
-def split(ip_string, type_of_value):
+def split(ip_string, type_of_value=None):
     if isinstance(ip_string, str):
-        if type_of_value != "date":
-            result = [float(num) for num in ip_string.strip("][").split(",")]
-        else:
+        if type_of_value == "date":
             result = ip_string.strip("][").split(",")
+        else:
+            result = [float(num) for num in ip_string.strip("][").split(",")]
     elif ip_string in (None, np.nan):
         result = np.nan
     else:
