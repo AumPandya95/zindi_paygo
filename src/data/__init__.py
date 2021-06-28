@@ -1,4 +1,3 @@
-
 r"""
 This module deals with the raw data.
 
