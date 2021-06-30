@@ -35,9 +35,13 @@ class SubmissionFile:
 
     def transform_prediction(self):
         """Transform prediction cols into the submission format."""
+        if self.type_of_data == "test":
+            metric_name = "Target"
+        else:
+            metric_name = "Prediction"
         transformed_frame = self.validation_data.melt(
             id_vars=["ID"], value_vars=["m1_pred", "m2_pred", "m3_pred", "m4_pred", "m5_pred", "m6_pred"],
-            var_name="temp", value_name="Prediction"
+            var_name="temp", value_name=metric_name
         )
         transformed_frame["temp"].replace(
             {
