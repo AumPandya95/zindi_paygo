@@ -2,6 +2,8 @@ from typing import Optional
 
 import pandas as pd
 
+__all__ = ['SubmissionFile']
+
 
 class SubmissionFile:
     """
