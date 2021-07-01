@@ -1,4 +1,5 @@
 import statistics
+from datetime import datetime
 
 import numpy as np
 
@@ -131,3 +132,9 @@ def add_predicted_payment(original_struct, value_to_add):
         raise Exception("Invalid Input")
 
     return result
+
+
+def convert(ip_str):
+    ip_str = ip_str.replace("'", "").strip()
+    ip_str = str(datetime.strptime(ip_str, "%m-%Y").strftime("%Y-%m"))
+    return ip_str
