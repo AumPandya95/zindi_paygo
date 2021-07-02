@@ -119,6 +119,12 @@ def back_feature(input_val, n=1):
     return result
 
 
+def convert(ip_str):
+    ip_str = ip_str.replace("'", "").strip()
+    ip_str = str(datetime.strptime(ip_str, "%m-%Y").strftime("%Y-%m"))
+    return ip_str
+
+
 def add_predicted_payment(original_struct, value_to_add):
     print(original_struct)
     if isinstance(original_struct, str):
