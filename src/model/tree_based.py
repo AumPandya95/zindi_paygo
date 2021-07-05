@@ -22,6 +22,7 @@ class ModelXgBoost:
     ) -> None:
         """Train the model on given data using Scikit-learn API of XGBoost."""
         model = xgb.XGBRegressor(use_label_encoder=False,
+                                 tree_method="gpu_hist",
                                  verbosity=0,
                                  objective="reg:squarederror",
                                  reg_lambda=0,
