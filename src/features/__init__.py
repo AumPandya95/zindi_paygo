@@ -13,8 +13,9 @@ __all__ = [
     'min_calc',
     'std_dev_calc',
     'back_feature',
-    'add_predicted_payment'
+    'add_predicted_payment',
+    'convert'
 ]
 
-from src.utils import split, length_calc, sum_calc, mean_calc, median_calc, max_calc, min_calc, std_dev_calc, \
-    back_feature, add_predicted_payment
+from src.features.utils import split, length_calc, sum_calc, mean_calc, median_calc, max_calc, min_calc, std_dev_calc, \
+    back_feature, add_predicted_payment, convert

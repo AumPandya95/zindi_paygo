@@ -14,7 +14,9 @@ def one_hot_encoding(
         categorical_frame: Union[np.ndarray, pd.DataFrame],
         type_of_data: str = "train",
         fitted_encoder: Optional[EncoderType] = None,
-        conv: Optional[bool] = True
+        conv: Optional[bool] = True,
+        drop: Optional[str] = None,
+        handle_unknown: str = "ignore"
 ) -> Tuple[Union[np.ndarray, pd.DataFrame], Optional[EncoderType]]:
     """
     Return the encoded categorical columns.
@@ -28,12 +30,17 @@ def one_hot_encoding(
         if type_of_data is not "train" then the fitted_encoder is required to transform "test" or "validation" data sets
     conv: bool
         Whether to convert the encoded array to a dataframe
+    drop: str :: [None, "first"]
+        Specifies a methodology to use to drop one of the categories per feature.
+    handle_unknown: str :: ["ignore", "error"]
+        Whether to raise an error or ignore if an unknown categorical feature is present during transform.
     Returns
     -------
     encoded_features: np.array
     """
     if type_of_data == "train":
-        encoder = OneHotEncoder(handle_unknown="ignore")
+        encoder = OneHotEncoder(drop=drop,
+                                handle_unknown=handle_unknown)
         encoder.fit(categorical_frame)
 
         final_array = encoder.transform(categorical_frame).toarray()

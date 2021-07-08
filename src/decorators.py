@@ -15,9 +15,16 @@ def conv_to_df(func):
                 enc_columns = []
                 for column in frame.columns:
                     # Each column's categories need to be sorted as this is how OHE is implemented
-                    enc_columns.extend(sorted(frame[column].unique()))
+                    if kwargs.get("drop", None):
+                        enc_columns.extend(sorted(frame[column].unique())[1:])
+                    else:
+                        enc_columns.extend(sorted(frame[column].unique()))
             else:
-                enc_columns = [categories for cat_arr in encoder.categories_ for categories in cat_arr]
+                if kwargs.get("drop", None):
+                    enc_columns = [categories for feat, cat_arr in enumerate(encoder.categories_)
+                                   for categories in cat_arr[encoder.drop_idx_[feat] + 1:]]
+                else:
+                    enc_columns = [categories for cat_arr in encoder.categories_ for categories in cat_arr]
             encoded_arr = pd.DataFrame(encoded_arr, columns=enc_columns)
         else:  # if isinstance(frame, np.ndarray)
             if kwargs.get("conv"):
