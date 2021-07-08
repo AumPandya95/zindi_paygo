@@ -41,7 +41,6 @@ def conv_to_df(func):
     return check_and_return_df
 
 
-
 def optimise_hyper_params(func):
     @functools.wraps(func)
     def search_space(self, *args, **kwargs):
@@ -60,7 +59,6 @@ def optimise_hyper_params(func):
                                                cv=5,
                                                verbose=3)
 
-
-        return None
+            return random_search
 
     return search_space
