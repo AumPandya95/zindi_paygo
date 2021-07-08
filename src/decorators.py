@@ -39,3 +39,28 @@ def conv_to_df(func):
         return encoded_arr, encoder
 
     return check_and_return_df
+
+
+
+def optimise_hyper_params(func):
+    @functools.wraps(func)
+    def search_space(self, *args, **kwargs):
+        optimisation_required = kwargs.get("optimise_model")
+        if not optimisation_required:
+            func(self, *args, **kwargs)
+            return
+        else:
+            from sklearn.model_selection import RandomizedSearchCV
+            model = func(self, *args, **kwargs)
+            random_search = RandomizedSearchCV(model,
+                                               param_distributions=kwargs.get("params"),
+                                               n_iter=5,
+                                               scoring="mean_squared_error",
+                                               n_jobs=-1,
+                                               cv=5,
+                                               verbose=3)
+
+
+        return None
+
+    return search_space
