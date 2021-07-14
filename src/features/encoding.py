@@ -1,23 +1,57 @@
+# from typing import Union, Optional, Tuple
+from typing import Union, Optional, Tuple
+
+import numpy as np
 import pandas as pd
+from sklearn.preprocessing import OneHotEncoder
+
+from src.decorators import conv_to_df
+
+EncoderType = OneHotEncoder
 
 
 class FeatureEncoding:
-    def __init__(self, df):
-        # TODO: Add modes here and save feature encoding in the objects
-        self.features_list = ["MainApplicantGender", "Region", "Occupation", "rateTypeEntity"]
-        self.df = df
+    def __init__(self):
+        self.encoder_obj = None
 
-    def execute(self):
-        self.encode(self.df, self.features_list)
+    @conv_to_df
+    def one_hot_encoding(
+            self,
+            categorical_frame: Union[np.ndarray, pd.DataFrame],
+            type_of_data: str = "train",
+            conv: Optional[bool] = True,
+            drop: Optional[str] = None,
+            handle_unknown: str = "ignore"
+    ) -> Tuple[Union[np.ndarray, pd.DataFrame], Optional[EncoderType]]:
+        """
+        Return the encoded categorical columns.
+        Parameters
+        ----------
+        categorical_frame: np.array
+            The categorical features from the train/ test set
+        type_of_data: str :: ["train", "test", "validation"]
+            if data is train then the encoder will be fit on the data
+        conv: bool
+            Whether to convert the encoded array to a dataframe
+        drop: str :: [None, "first"]
+            Specifies a methodology to use to drop one of the categories per feature.
+        handle_unknown: str :: ["ignore", "error"]
+            Whether to raise an error or ignore if an unknown categorical feature is present during transform.
+        Returns
+        -------
+        encoded_features: np.array
+        """
+        if type_of_data == "train":
+            self.encoder_obj = OneHotEncoder(drop=drop, handle_unknown=handle_unknown)
+            self.encoder_obj.fit(categorical_frame)
+            final_array = self.encoder_obj.transform(categorical_frame).toarray()
 
-    def encode(self, df, features_list):
-        for feature in features_list:
-            df = self._encode_and_bind(df, feature)
-        return df
-
-    @staticmethod
-    def _encode_and_bind(df, feature_name):
-        dummies = pd.get_dummies(df[[feature_name]])
-        res = pd.concat([df, dummies], axis=1)
-        res = res.drop([feature_name], axis=1)
-        return res
+            return final_array
+        else:
+            if self.encoder_obj:
+                final_array = self.encoder_obj.transform(categorical_frame).toarray()
+                return final_array
+            else:
+                raise Exception(
+                    "No fitted encoder object provided to transform the test/ validation data set."
+                )

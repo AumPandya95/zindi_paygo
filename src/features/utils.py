@@ -140,7 +140,9 @@ def add_predicted_payment(original_struct, value_to_add):
     return result
 
 
-def convert(ip_str):
-    ip_str = ip_str.replace("'", "").strip()
-    ip_str = str(datetime.strptime(ip_str, "%m-%Y").strftime("%Y-%m"))
-    return ip_str
+def add_payment(og_list, new_payment):
+    if og_list in (None, np.nan):
+        og_list = np.nan
+    else:
+        og_list.append(new_payment)
+    return og_list
