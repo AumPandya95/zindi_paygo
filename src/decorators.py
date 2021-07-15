@@ -6,9 +6,9 @@ import pandas as pd
 
 def conv_to_df(func):
     @functools.wraps(func)
-    def check_and_return_df(*args, **kwargs):
+    def check_and_return_df(self, *args, **kwargs):
         frame = kwargs.get("categorical_frame")
-        encoded_arr, encoder = func(*args, **kwargs)
+        encoded_arr = func(self, *args, **kwargs)
         # two pipelines for pd.DataFrame and np.ndarray
         if isinstance(frame, pd.DataFrame):
             if kwargs.get("type_of_data", False) == "train":
@@ -21,10 +21,10 @@ def conv_to_df(func):
                         enc_columns.extend(sorted(frame[column].unique()))
             else:
                 if kwargs.get("drop", None):
-                    enc_columns = [categories for feat, cat_arr in enumerate(encoder.categories_)
-                                   for categories in cat_arr[encoder.drop_idx_[feat] + 1:]]
+                    enc_columns = [categories for feat, cat_arr in enumerate(self.encoder_obj.categories_)
+                                   for categories in cat_arr[self.encoder_obj.drop_idx_[feat] + 1:]]
                 else:
-                    enc_columns = [categories for cat_arr in encoder.categories_ for categories in cat_arr]
+                    enc_columns = [categories for cat_arr in self.encoder_obj.categories_ for categories in cat_arr]
             encoded_arr = pd.DataFrame(encoded_arr, columns=enc_columns)
         else:  # if isinstance(frame, np.ndarray)
             if kwargs.get("conv"):
@@ -33,10 +33,10 @@ def conv_to_df(func):
                     for column_idx in range(frame.shape[1]):
                         enc_columns.extend(sorted(np.unique(frame[:, column_idx], axis=0)))
                 else:
-                    enc_columns = [categories for cat_arr in encoder.categories_ for categories in cat_arr]
+                    enc_columns = [categories for cat_arr in self.encoder_obj.categories_ for categories in cat_arr]
                 encoded_arr = pd.DataFrame(encoded_arr, columns=enc_columns)
 
-        return encoded_arr, encoder
+        return encoded_arr
 
     return check_and_return_df
 
