@@ -9,3 +9,4 @@ venv/
 /notebooks/.ipynb_checkpoints/StarterNotebook-checkpoint.ipynb
 tasks.txt
 submissions/
+data/processed/
