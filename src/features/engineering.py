@@ -97,8 +97,9 @@ class FeatureEngineering:
         return df
 
     def execute(self, df):
-        df = self.payment_features(df)
+        # df = self.payment_features(df)
         df = self.back_features(df)
         # df = self.date_features(df)
-
+        # TODO: @nikhil :: Can we add lines in each method to drop columns? Else we will have to add that in the 
+        # TODO: main notebook. Your call.
         return df
