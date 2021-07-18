@@ -20,7 +20,7 @@ class DataIngestion:
     @staticmethod
     def _read_file(path):
         return pd.read_csv(path, sep=",")
-    
+
     def execute(self, set_seed=0, train_size=0.55):
         metadata = self._read_file(self.meta_data_path)
         if self.mode == "train":
