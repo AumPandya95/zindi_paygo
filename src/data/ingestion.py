@@ -4,17 +4,12 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
+from sklearn.model_selection import train_test_split
+
 ROOT_PATH = str(Path(__file__)).split('src')[0]
 TRAIN_PATH = os.path.join(ROOT_PATH, "data/raw/Train.csv")
 METADATA_PATH = os.path.join(ROOT_PATH, "data/raw/metadata.csv")
 TEST_PATH = os.path.join(ROOT_PATH, "data/raw/Test.csv")
-
-
-def split_data(train, target, test_size=0.45, set_seed=10):
-        from sklearn.model_selection import train_test_split
-        X_train, X_test, y_train, y_test = train_test_split(train, target, test_size=test_size, random_state=set_seed)
-
-        return X_train, X_test, y_train, y_test
 
 
 class DataIngestion:
@@ -32,7 +27,7 @@ class DataIngestion:
     def _read_file(path):
         return pd.read_csv(path, sep=",")
 
-    def execute(self):
+    def execute(self, train_size=0.55, set_seed=10):
         metadata = self._read_file(self.meta_data_path)
         if self.mode == "train":
             train_df = self._read_file(self.train_path)
@@ -43,7 +38,9 @@ class DataIngestion:
             train_df = self._read_file(self.train_path)
             merged = self._merge(train_df, metadata)
 
-            return merged
+            train, test = train_test_split(merged, train_size=train_size, random_state=set_seed)
+
+            return train, test
 
         elif self.mode == "test":
             test_df = self._read_file(self.test_path)
