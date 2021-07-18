@@ -10,6 +10,14 @@ METADATA_PATH = os.path.join(ROOT_PATH, "data/raw/metadata.csv")
 TEST_PATH = os.path.join(ROOT_PATH, "data/raw/Test.csv")
 
 
+def split_data(train, target, set_seed=10):
+        from sklearn.model_selection import train_test_split
+        seed=set_seed
+        X_train, X_test, y_train, y_test = train_test_split(train, target, test_size=0.45, random_state=seed)
+
+        return X_train, X_test, y_train, y_test
+
+
 class DataIngestion:
     def __init__(self, mode="dev"):
         self.mode = mode
@@ -25,7 +33,7 @@ class DataIngestion:
     def _read_file(path):
         return pd.read_csv(path, sep=",")
 
-    def execute(self, set_seed=0, train_size=0.55):
+    def execute(self, train_size=0.55):
         metadata = self._read_file(self.meta_data_path)
         if self.mode == "train":
             train_df = self._read_file(self.train_path)
