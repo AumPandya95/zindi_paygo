@@ -31,6 +31,8 @@ class FeatureEngineering:
         base_df["nb_payments"] = base_df["nb_payments"] + 1
         base_df["amount_paid"] += base_df["new_payment"]
         # base_df = pd.concat([base_df, new_df], axis=1)
+        # TODO: @nikhil :: Access to SplitPaymentsHistory not there post encoding. Either we will have to merge 
+        # TODO: this column again or we need to incorporate the merge logic in this code base
         base_df["SplitPaymentsHistory"] = base_df.apply(
             lambda row: add_payment(row["SplitPaymentsHistory"], row["new_payment"]), axis=1)
         base_df = self._calc_payment_stats(base_df)
