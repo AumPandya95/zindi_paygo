@@ -1,9 +1,13 @@
+import os
+from pathlib import Path
+
 import pandas as pd
 import numpy as np
 
-TRAIN_PATH = "../data/raw/Train.csv"
-METADATA_PATH = "../data/raw/metadata.csv"
-TEST_PATH = "../data/raw/Test.csv"
+ROOT_PATH = str(Path(__file__)).split('src')[0]
+TRAIN_PATH = os.path.join(ROOT_PATH, "/data/raw/Train.csv")
+METADATA_PATH = os.path.join(ROOT_PATH, "/data/raw/metadata.csv")
+TEST_PATH = os.path.join(ROOT_PATH, "/data/raw/Test.csv")
 
 
 class DataIngestion:
