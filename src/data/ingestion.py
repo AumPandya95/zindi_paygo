@@ -12,12 +12,13 @@ class DataIngestion:
         self.meta_data_path = METADATA_PATH
         self.test_path = TEST_PATH
 
-    def execute(self, train_size=0.75):
+    def execute(self, set_seed=0, train_size=0.55):
         metadata = self._read_file(self.meta_data_path)
         if self.mode == "train":
             train_df = self._read_file(self.train_path)
             return self._merge(train_df, metadata)
         elif self.mode == "dev":
+            np.random.seed(set_seed)  # Necessary for reproducible results
             train_df = self._read_file(self.train_path)
             merged = self._merge(train_df, metadata)
             mask = np.random.rand(len(merged)) <= train_size
