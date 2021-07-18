@@ -5,6 +5,28 @@ import pandas as pd
 
 class FeatureEngineering:
 
+    @staticmethod
+    def _nb_missing_payments(transaction_dates, first_payment_date, last_payment_date):
+        payment_dates = set([convert(x) for x in transaction_dates])
+        payment_dates_range = set([str(x) for x in pd.period_range(first_payment_date, last_payment_date, freq="M")])
+
+        return len(payment_dates_range - payment_dates) - 6
+
+    @staticmethod
+    def _add_back_feature(df, n=1):
+        df[f"b{n}"] = df.apply(lambda row: back_feature(row["SplitPaymentsHistory"], n), axis=1)
+        return df
+    
+    @staticmethod
+    def _calc_payment_stats(df):
+        df["percent_amt_paid"] = df["amount_paid"] / df["TotalContractValue"]
+        df["mean_amt_paid"] = df.apply(lambda row: mean_calc(row["SplitPaymentsHistory"]), axis=1)
+        df["median_amt_paid"] = df.apply(lambda row: median_calc(row["SplitPaymentsHistory"]), axis=1)
+        df["max_amt_paid"] = df.apply(lambda row: max_calc(row["SplitPaymentsHistory"]), axis=1)
+        df["min_amt_paid"] = df.apply(lambda row: min_calc(row["SplitPaymentsHistory"]), axis=1)
+        df["stddev_amt_paid"] = df.apply(lambda row: std_dev_calc(row["SplitPaymentsHistory"]), axis=1)
+        return df
+
     def get_updated_df(self, base_df):
         base_df["nb_payments"] = base_df["nb_payments"] + 1
         base_df["amount_paid"] += base_df["new_payment"]
@@ -30,16 +52,6 @@ class FeatureEngineering:
             ), axis=1
         )
 
-        return df
-
-    @staticmethod
-    def _calc_payment_stats(df):
-        df["percent_amt_paid"] = df["amount_paid"] / df["TotalContractValue"]
-        df["mean_amt_paid"] = df.apply(lambda row: mean_calc(row["SplitPaymentsHistory"]), axis=1)
-        df["median_amt_paid"] = df.apply(lambda row: median_calc(row["SplitPaymentsHistory"]), axis=1)
-        df["max_amt_paid"] = df.apply(lambda row: max_calc(row["SplitPaymentsHistory"]), axis=1)
-        df["min_amt_paid"] = df.apply(lambda row: min_calc(row["SplitPaymentsHistory"]), axis=1)
-        df["stddev_amt_paid"] = df.apply(lambda row: std_dev_calc(row["SplitPaymentsHistory"]), axis=1)
         return df
 
     def back_features(self, df, nb_back_features=5, mode="original"):
@@ -82,21 +94,9 @@ class FeatureEngineering:
         # df["RegistrationMonthCos"] = np.cos((df.RegistrationMonth-1)*(2.*np.pi/12))
         return df
 
-    @staticmethod
-    def _nb_missing_payments(transaction_dates, first_payment_date, last_payment_date):
-        payment_dates = set([convert(x) for x in transaction_dates])
-        payment_dates_range = set([str(x) for x in pd.period_range(first_payment_date, last_payment_date, freq="M")])
-
-        return len(payment_dates_range - payment_dates) - 6
-
-    @staticmethod
-    def _add_back_feature(df, n=1):
-        df[f"b{n}"] = df.apply(lambda row: back_feature(row["SplitPaymentsHistory"], n), axis=1)
-        return df
-
     def execute(self, df):
         df = self.payment_features(df)
         df = self.back_features(df)
-        df = self.date_features(df)
+        # df = self.date_features(df)
 
         return df
