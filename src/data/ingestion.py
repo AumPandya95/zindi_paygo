@@ -29,16 +29,20 @@ class DataIngestion:
         metadata = self._read_file(self.meta_data_path)
         if self.mode == "train":
             train_df = self._read_file(self.train_path)
+
             return self._merge(train_df, metadata)
+
         elif self.mode == "dev":
             np.random.seed(set_seed)  # Necessary for reproducible results
             train_df = self._read_file(self.train_path)
             merged = self._merge(train_df, metadata)
-            mask = np.random.rand(len(merged)) <= train_size
-            train, test = merged[mask], merged[~mask]
-            return train, test
+
+            return merged
+
         elif self.mode == "test":
             test_df = self._read_file(self.test_path)
+
             return self._merge(test_df, metadata)
+
         else:
             raise Exception("Incorrect mode passed")
