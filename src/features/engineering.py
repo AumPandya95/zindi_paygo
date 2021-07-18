@@ -4,12 +4,6 @@ import pandas as pd
 
 
 class FeatureEngineering:
-    def execute(self, df):
-        df = self.payment_features(df)
-        df = self.back_features(df)
-        df = self.date_features(df)
-
-        return df
 
     def get_updated_df(self, base_df):
         base_df["nb_payments"] = base_df["nb_payments"] + 1
@@ -98,4 +92,11 @@ class FeatureEngineering:
     @staticmethod
     def _add_back_feature(df, n=1):
         df[f"b{n}"] = df.apply(lambda row: back_feature(row["SplitPaymentsHistory"], n), axis=1)
+        return df
+
+    def execute(self, df):
+        df = self.payment_features(df)
+        df = self.back_features(df)
+        df = self.date_features(df)
+
         return df
