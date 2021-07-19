@@ -55,4 +55,3 @@ class FeatureEncoding:
                 raise Exception(
                     "No fitted encoder object provided to transform the test/ validation data set."
                 )
-
