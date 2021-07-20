@@ -1,4 +1,5 @@
 import statistics
+from copy import deepcopy
 from datetime import datetime
 
 import numpy as np
@@ -144,5 +145,6 @@ def add_payment(og_list, new_payment):
     if og_list in (None, np.nan):
         og_list = np.nan
     else:
-        og_list.append(new_payment)
-    return og_list
+        og_list_deepcopy = deepcopy(og_list)
+        og_list_deepcopy.append(new_payment)
+    return og_list_deepcopy
