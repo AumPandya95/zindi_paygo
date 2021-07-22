@@ -27,7 +27,12 @@ class FeatureEngineering:
         df["stddev_amt_paid"] = df.apply(lambda row: std_dev_calc(row["SplitPaymentsHistory"]), axis=1)
         return df
 
-    def get_updated_df(self, base_df):
+    def get_updated_df(self, base_df, only_back_features=True):
+        if only_back_features:
+            base_df = self.back_features(base_df, mode="update")
+
+            return base_df
+
         base_df["nb_payments"] = base_df["nb_payments"] + 1
         base_df["amount_paid"] += base_df["new_payment"]
         # base_df = pd.concat([base_df, new_df], axis=1)
@@ -36,7 +41,6 @@ class FeatureEngineering:
         base_df["SplitPaymentsHistory"] = base_df.apply(
             lambda row: add_payment(row["SplitPaymentsHistory"], row["new_payment"]), axis=1)
         base_df = self._calc_payment_stats(base_df)
-        base_df = self.back_features(base_df, mode="update")
 
         return base_df
 
