@@ -40,9 +40,14 @@ class FeatureEngineering:
 
         return base_df
 
+    @staticmethod
+    def get_split_payment_history(df):
+        df["SplitPaymentsHistory"] = df.apply(lambda row: split(row["PaymentsHistory"]), axis=1)
+
+        return df
+
     def payment_features(self, df):
         # TODO: Write checks for base columns like SplitTransactionsHistory
-        df["SplitPaymentsHistory"] = df.apply(lambda row: split(row["PaymentsHistory"]), axis=1)
         df["SplitTransactionDates"] = df.apply(lambda row: split(row["TransactionDates"], type_of_value='date'),
                                                axis=1)
         df["nb_payments"] = df.apply(lambda row: length_calc(row["SplitPaymentsHistory"]), axis=1)
@@ -97,7 +102,8 @@ class FeatureEngineering:
         return df
 
     def execute(self, df):
-        df = self.payment_features(df)
+        df = get_split_payment_history(df)
+        # df = self.payment_features(df)
         df = self.back_features(df)
         # df = self.date_features(df)
         # TODO: @nikhil :: Can we add lines in each method to drop columns? Else we will have to add that in the 
