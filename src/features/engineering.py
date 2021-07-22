@@ -102,7 +102,7 @@ class FeatureEngineering:
         return df
 
     def execute(self, df):
-        df = get_split_payment_history(df)
+        df = self.get_split_payment_history(df)
         # df = self.payment_features(df)
         df = self.back_features(df)
         # df = self.date_features(df)
