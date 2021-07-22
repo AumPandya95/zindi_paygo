@@ -106,6 +106,7 @@ class FeatureEngineering:
         # df["RegistrationMonthCos"] = np.cos((df.RegistrationMonth-1)*(2.*np.pi/12))
         return df
 
+    @staticmethod
     def drop_columns(df):
         df.drop(
             columns=[
