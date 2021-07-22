@@ -36,8 +36,7 @@ class FeatureEngineering:
         base_df["nb_payments"] = base_df["nb_payments"] + 1
         base_df["amount_paid"] += base_df["new_payment"]
         # base_df = pd.concat([base_df, new_df], axis=1)
-        # TODO: @nikhil :: Access to SplitPaymentsHistory not there post encoding. Either we will have to merge 
-        # TODO: this column again or we need to incorporate the merge logic in this code base
+
         base_df["SplitPaymentsHistory"] = base_df.apply(
             lambda row: add_payment(row["SplitPaymentsHistory"], row["new_payment"]), axis=1)
         base_df = self._calc_payment_stats(base_df)
@@ -51,7 +50,6 @@ class FeatureEngineering:
         return df
 
     def payment_features(self, df):
-        # TODO: Write checks for base columns like SplitTransactionsHistory
         df["SplitTransactionDates"] = df.apply(lambda row: split(row["TransactionDates"], type_of_value='date'),
                                                axis=1)
         df["nb_payments"] = df.apply(lambda row: length_calc(row["SplitPaymentsHistory"]), axis=1)
@@ -69,7 +67,10 @@ class FeatureEngineering:
         if mode == "update":
             df.drop([f"b{nb_back_features}"], axis=1, inplace=True)
             df.rename(columns={f"b{i}": f"b{i+1}" for i in range(nb_back_features-1, 0, -1)}, inplace=True)
-            df.rename(columns={"new_payment": "b1"}, inplace=True)
+            
+            df.insert(loc=0, column="b1", value=df[["new_payment"]].values)
+            df.drop(columns=["new_payment"], inplace=True)
+            # df.rename(columns={"new_payment": "b1"}, inplace=True)
         else:
             for i in range(1, nb_back_features + 1):
                 df = self._add_back_feature(df, i)
@@ -110,6 +111,6 @@ class FeatureEngineering:
         # df = self.payment_features(df)
         df = self.back_features(df)
         # df = self.date_features(df)
-        # TODO: @nikhil :: Can we add lines in each method to drop columns? Else we will have to add that in the 
-        # TODO: main notebook. Your call.
+        # drop useless columns
+
         return df
