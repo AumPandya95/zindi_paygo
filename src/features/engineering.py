@@ -106,11 +106,42 @@ class FeatureEngineering:
         # df["RegistrationMonthCos"] = np.cos((df.RegistrationMonth-1)*(2.*np.pi/12))
         return df
 
+    def drop_columns(df):
+        df.drop(
+            columns=[
+                'TransactionDates',
+                'PaymentsHistory',
+                'RegistrationDate',
+                'UpsellDate',
+                'SupplierName',
+                'PaymentMethod',
+                'ExpectedTermDate',
+                'FirstPaymentDate',
+                'LastPaymentDate',
+                'SplitTransactionDates',
+                'RegistrationDateParsed',
+                'ExpectedTermDateParsed',
+                'FirstPaymentDateParsed',
+                'LastPaymentDateParsed',
+                'LastFirstDuration',
+                'ExpectedFirstDuration',
+                'LastRegistrationDuration',
+                'FirstPaymentMonth',
+                'LastPaymentMonth',
+                'RegistrationMonth'
+            ],
+            inplace=True,
+            errors='ignore'
+        )
+
+        return df
+
     def execute(self, df):
         df = self.get_split_payment_history(df)
         # df = self.payment_features(df)
         df = self.back_features(df)
         # df = self.date_features(df)
         # drop useless columns
+        df = self.drop_columns(df)
 
         return df
