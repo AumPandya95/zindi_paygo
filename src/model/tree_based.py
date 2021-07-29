@@ -49,7 +49,8 @@ class ModelXgBoost:
             - Best model can be accessed by `model.best_estimator_`
             - Best model params can be accessed by `model.best_params_`
         """
-        model = xgb.XGBRegressor(use_label_encoder=False,
+        model = xgb.XGBRegressor(random_state=0, 
+                                 use_label_encoder=False,
                                  verbosity=0,
                                  objective="reg:squarederror",
                                  reg_lambda=tuned_params.get('reg_lambda', 0),
