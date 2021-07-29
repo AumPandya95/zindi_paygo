@@ -38,6 +38,7 @@ class DataIngestion:
             train_df = self._read_file(self.train_path)
             merged = self._merge(train_df, metadata)
 
+            merged.dropna(subset=['Region'], how='all', inplace=True)
             train, test = train_test_split(merged, train_size=train_size, random_state=set_seed)
 
             return train, test
