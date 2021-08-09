@@ -3,6 +3,7 @@ from typing import Union, Dict, Optional
 import numpy as np
 import pandas as pd
 import xgboost as xgb
+import lightgbm as lgb
 
 from src.decorators import optimise_hyper_params
 
@@ -72,3 +73,35 @@ class ModelXgBoost:
             out_metric[_metric] = value
 
         return out_metric
+
+
+class ModelLightGBM:
+    def __init__(
+            self,
+            train_array: Union[np.ndarray],
+            train_target: Union[np.ndarray]
+    ) -> None:
+        self.train_array = train_array
+        self.train_target = train_target
+        self.trained_model = None
+    
+    def train_model(
+            self,
+            optimise_model: bool = False,
+            params: Optional[Dict] = None,
+            **tuned_params
+    ) -> Union[lgb.LGBMRegressor, None]:
+        model = lgb.LGBMRegressor(random_state=100,
+                                  task="train", 
+                                  boosting_type="gbdt", 
+                                  objective="regression",
+                                  importance_type="gain",
+                                  reg_lambda=tuned_params.get('reg_lambda', 0),
+                                  reg_alpha=tuned_params.get('reg_alpha', 50),
+                                  num_leaves=tuned_params.get('num_leaves', 31),
+                                  learning_rate=tuned_params.get('learning_rate', 0.1))
+        if not optimise_model:
+            self.trained_model = model.fit(self.train_array, self.train_target)
+            return
+        else:
+            return model
