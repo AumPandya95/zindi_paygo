@@ -10,4 +10,5 @@ venv/
 tasks.txt
 submissions/
 data/processed/
+data/raw/
 notebooks/models/*.csv
