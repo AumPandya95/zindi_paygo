@@ -62,9 +62,8 @@ class ModelXgBoost:
         if not optimise_model:
             self.trained_model = model.fit(self.train_array, self.train_target)
             return
-        else:
-            self.trained_model = model.fit(self.train_array, self.train_target)
-            return
+        else:  # This will return the fitted model (best model via expected search method)
+            return model
 
     def get_imp_features(
             self
