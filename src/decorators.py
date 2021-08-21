@@ -59,21 +59,23 @@ def optimise_hyper_params(func):
                                                  param_distributions=kwargs.get(
                                                      "params"),
                                                  n_iter=5,
-                                                 scoring="mean_squared_error",
+                                                 scoring="neg_mean_squared_error",
                                                  n_jobs=-1,
                                                  cv=5,
                                                  verbose=3)
             else:
                 from sklearn.model_selection import GridSearchCV
                 model = func(self, *args, **kwargs)
-                search_step = GridSearchCV(model,
+                search_step = GridSearchCV(estimator=model,
                                            param_grid=kwargs.get(
                                                "params"),
-                                           cv=cv,
-                                           scoring="mean_squared_error",
+                                           cv=5,
+                                           scoring="neg_mean_squared_error",
                                            n_jobs=-1,
                                            verbose=3)
 
-            return search_step
+            fitted_model = search_step.fit(self.train_array, self.train_target)
+            print('best params', fitted_model.best_params_)
+            return fitted_model
 
     return search_space
