@@ -57,13 +57,14 @@ class ModelXgBoost:
                                  use_label_encoder=False,
                                  verbosity=0,
                                  objective="reg:squarederror",
-                                 reg_lambda=tuned_params.get('reg_lambda', 0),
-                                 reg_alpha=tuned_params.get('reg_alpha', 50))
+                                 learning_rate=tuned_params.get('learning_rate', 0.1),
+                                 reg_lambda=tuned_params.get('reg_lambda', 1),
+                                 reg_alpha=tuned_params.get('reg_alpha', 0))
         if not optimise_model:
             self.trained_model = model.fit(self.train_array, self.train_target)
             return
         else:  # This will return the fitted model (best model via expected search method)
-            return model
+            return model.fit(self.train_array, self.train_target)
 
     def get_imp_features(
             self
