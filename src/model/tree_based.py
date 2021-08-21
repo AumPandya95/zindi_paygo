@@ -59,9 +59,12 @@ class ModelXgBoost:
                                  objective="reg:squarederror",
                                  reg_lambda=tuned_params.get('reg_lambda', 0),
                                  reg_alpha=tuned_params.get('reg_alpha', 50))
-
-        self.trained_model = model.fit(self.train_array, self.train_target)
-        return
+        if not optimise_model:
+            self.trained_model = model.fit(self.train_array, self.train_target)
+            return
+        else:
+            self.trained_model = model.fit(self.train_array, self.train_target)
+            return
 
     def get_imp_features(
             self
