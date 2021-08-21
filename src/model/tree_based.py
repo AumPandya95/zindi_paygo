@@ -23,6 +23,7 @@ class ModelXgBoost:
     def train_model(
             self,
             optimise_model: bool = False,
+            opt_method: Optional[str] = None,
             params: Optional[Dict] = None,
             **tuned_params
     ) -> Union[xgb.XGBRegressor, None]:
@@ -35,6 +36,8 @@ class ModelXgBoost:
         ----------
         optimise_model: bool
             Whether optimisation is required for the model
+        opt_method: str :: [None, grid_search, random_search]
+            Which method to employ for searching optimal parameters
         params: dict, Optional
             hyper parameter ranges for the SearchCV to iterate on to find the best model. This is only valid and
             required if optimise_model is True.
@@ -56,11 +59,9 @@ class ModelXgBoost:
                                  objective="reg:squarederror",
                                  reg_lambda=tuned_params.get('reg_lambda', 0),
                                  reg_alpha=tuned_params.get('reg_alpha', 50))
-        if not optimise_model:
-            self.trained_model = model.fit(self.train_array, self.train_target)
-            return
-        else:
-            return model
+
+        self.trained_model = model.fit(self.train_array, self.train_target)
+        return
 
     def get_imp_features(
             self

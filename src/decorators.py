@@ -24,16 +24,19 @@ def conv_to_df(func):
                     enc_columns = [categories for feat, cat_arr in enumerate(self.encoder_obj.categories_)
                                    for categories in cat_arr[self.encoder_obj.drop_idx_[feat] + 1:]]
                 else:
-                    enc_columns = [categories for cat_arr in self.encoder_obj.categories_ for categories in cat_arr]
+                    enc_columns = [
+                        categories for cat_arr in self.encoder_obj.categories_ for categories in cat_arr]
             encoded_arr = pd.DataFrame(encoded_arr, columns=enc_columns)
         else:  # if isinstance(frame, np.ndarray)
             if kwargs.get("conv"):
                 if kwargs.get("type_of_data", False) == "train":
                     enc_columns = []
                     for column_idx in range(frame.shape[1]):
-                        enc_columns.extend(sorted(np.unique(frame[:, column_idx], axis=0)))
+                        enc_columns.extend(
+                            sorted(np.unique(frame[:, column_idx], axis=0)))
                 else:
-                    enc_columns = [categories for cat_arr in self.encoder_obj.categories_ for categories in cat_arr]
+                    enc_columns = [
+                        categories for cat_arr in self.encoder_obj.categories_ for categories in cat_arr]
                 encoded_arr = pd.DataFrame(encoded_arr, columns=enc_columns)
 
         return encoded_arr
@@ -49,16 +52,28 @@ def optimise_hyper_params(func):
             func(self, *args, **kwargs)
             return
         else:
-            from sklearn.model_selection import RandomizedSearchCV
-            model = func(self, *args, **kwargs)
-            random_search = RandomizedSearchCV(model,
-                                               param_distributions=kwargs.get("params"),
-                                               n_iter=5,
-                                               scoring="mean_squared_error",
-                                               n_jobs=-1,
-                                               cv=5,
-                                               verbose=3)
+            if kwargs.get("opt_method", None) == "random_search":
+                from sklearn.model_selection import RandomizedSearchCV
+                model = func(self, *args, **kwargs)
+                search_step = RandomizedSearchCV(model,
+                                                 param_distributions=kwargs.get(
+                                                     "params"),
+                                                 n_iter=5,
+                                                 scoring="mean_squared_error",
+                                                 n_jobs=-1,
+                                                 cv=5,
+                                                 verbose=3)
+            else:
+                from sklearn.model_selection import GridSearchCV
+                model = func(self, *args, **kwargs)
+                search_step = GridSearchCV(model,
+                                           param_grid=kwargs.get(
+                                               "params"),
+                                           cv=cv,
+                                           scoring="mean_squared_error",
+                                           n_jobs=-1,
+                                           verbose=3)
 
-            return random_search
+            return search_step
 
     return search_space
